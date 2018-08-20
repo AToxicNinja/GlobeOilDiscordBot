@@ -201,8 +201,8 @@ async function authorize() {
     // configure a JWT auth client
     let jwtClient = new google.auth.JWT(
         process.env.serviceAccountEmail,
-        process.env.serviceAccountPrivateKey,
         null,
+        process.env.serviceAccountPrivateKey.replace(/\\n/g, '\n'),
         'https://www.googleapis.com/auth/spreadsheets.readonly');
 
     // Authenticate request
