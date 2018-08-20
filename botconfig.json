@@ -1,0 +1,14 @@
+{
+    "cmdPrefix": "!",
+    "botCmdChannel": "voucher-status",
+    "spreadsheetTab": "Vouchers",
+    "userRowEnd": 162,
+    "spreadsheetDataRowStart": 8,
+    "discordNameColumn": "C",
+    "currentRankColumn": "E",
+    "totalVoucherAmountColumn": "F",
+    "weeklyVoucherAmountColumn": "G",
+    "voucherLevelRequirements": [500, 2500, 7000, 14000, 25000],
+    "voucherLevelNames": ["Trucker", "Expert Trucker", "Global Transporter", "Expert Transporter", "Head Transporter"],
+    "maxMemberCountColumnRow": "P2"
+}

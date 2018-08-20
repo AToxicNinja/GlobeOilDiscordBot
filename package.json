@@ -1,0 +1,30 @@
+{
+  "name": "globe-oil-discord-bot",
+  "version": "1.0.0",
+  "description": "A Discord Bot for Globe Oil Of Transport Tycoon on FiveM",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "globe",
+    "oil",
+    "discord",
+    "bot",
+    "FiveM",
+    "Transport",
+    "Tycoon",
+    "GTAV"
+  ],
+  "author": "AToxicNinja",
+  "license": "MIT",
+  "dependencies": {
+    "bufferutil": "^3.0.5",
+    "discord.js": "^11.4.2",
+    "googleapis": "^32.0.0"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  }
+}
