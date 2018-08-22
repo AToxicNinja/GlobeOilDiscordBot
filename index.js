@@ -1,8 +1,10 @@
 const Discord = require('discord.js');
 const fs = require('fs');
+const dotenv = require('dotenv');
 const bot = new Discord.Client();
 const BOTCONFIG = require('./botconfig.json');
 
+dotenv.config();
 bot.commands = new Discord.Collection();
 
 fs.readdir('./commands/', function (err, files) {
@@ -45,7 +47,7 @@ bot.on('message', function (msg) {
         return val.name === BOTCONFIG.botCmdChannel;
     });
 
-    if (msg.channel != botChannel) {
+    if (botChannel && msg.channel != botChannel) {
         return;
     }
 
