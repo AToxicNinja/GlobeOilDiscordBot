@@ -172,7 +172,9 @@ module.exports.run = async function (bot, message, args) {
             .setDescription("Voucher Information")
             .setColor("#09e213");
 
-        if (parseInt(userWeeklyVouchers, 10) < 200) {
+        let voucherNum = parseInt(userWeeklyVouchers, 10);
+
+        if ((userRank !== "CEO" && userRank !== "Manager") && (voucherNum === NaN || voucherNum < 200)) {
             voucherEmbed.setColor("#e80000");
             voucherEmbed.addField("WARNING: You have not turned in the weekly quota yet", "You will be fired if you cannot meet this quota");
         }
