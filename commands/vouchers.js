@@ -31,11 +31,11 @@ module.exports.run = async function (bot, message, args) {
 
     // Get bot channel info
     let botChannel = message.guild.channels.find(function (val) {
-        return val.name === BOTCONFIG.botCmdChannel;
+        return val.name === BOTCONFIG.botVoucherChannel;
     });
 
     if (!botChannel) {
-        return message.channel.send(`Couldn't find botCmdChannel: <@${BOTCONFIG.botCmdChannel}>`);
+        return message.channel.send(`Couldn't find botVoucherChannel: <@${BOTCONFIG.botVoucherChannel}>`);
     }
 
     // Check if user is in cooldown, if so return
@@ -67,7 +67,7 @@ module.exports.run = async function (bot, message, args) {
     let promises = [];
 
     // Get the user's row number from spreadsheet
-    let range = `${BOTCONFIG.spreadsheetTab}!${discordNameColumn}${spreadsheetDataRowStart}:${discordNameColumn}${userRowEnd}`;
+    let range = `${BOTCONFIG.spreadsheetVoucherTab}!${discordNameColumn}${spreadsheetDataRowStart}:${discordNameColumn}${userRowEnd}`;
     let relativeUserID = await sheets.spreadsheets.values.get({
         auth: authClient,
         spreadsheetId: process.env.spreadsheetID,
@@ -117,7 +117,7 @@ module.exports.run = async function (bot, message, args) {
     }
 
     // Get user rank
-    range = `${BOTCONFIG.spreadsheetTab}!${currentRankColumn}${relativeUserID}`;
+    range = `${BOTCONFIG.spreadsheetVoucherTab}!${currentRankColumn}${relativeUserID}`;
     promises.push(sheets.spreadsheets.values.get({
         auth: authClient,
         spreadsheetId: process.env.spreadsheetID,
@@ -129,7 +129,7 @@ module.exports.run = async function (bot, message, args) {
     }));
 
     // Get User Weekly Vouchers
-    range = `${BOTCONFIG.spreadsheetTab}!${weeklyVoucherAmountColumn}${relativeUserID}`;
+    range = `${BOTCONFIG.spreadsheetVoucherTab}!${weeklyVoucherAmountColumn}${relativeUserID}`;
     promises.push(sheets.spreadsheets.values.get({
         auth: authClient,
         spreadsheetId: process.env.spreadsheetID,
@@ -141,7 +141,7 @@ module.exports.run = async function (bot, message, args) {
     }));
 
     // Get User Total Vouchers
-    range = `${BOTCONFIG.spreadsheetTab}!${totalVoucherAmountColumn}${relativeUserID}`;
+    range = `${BOTCONFIG.spreadsheetVoucherTab}!${totalVoucherAmountColumn}${relativeUserID}`;
     promises.push(sheets.spreadsheets.values.get({
         auth: authClient,
         spreadsheetId: process.env.spreadsheetID,

@@ -21,11 +21,11 @@ module.exports.run = async function (bot, message, args) {
 
     // Get bot channel info
     let botChannel = message.guild.channels.find(function (val) {
-        return val.name === BOTCONFIG.botCmdChannel;
+        return val.name === BOTCONFIG.botVoucherChannel;
     });
 
     if (!botChannel) {
-        return message.channel.send(`Couldn't find botCmdChannel: ${BOTCONFIG.botCmdChannel}`);
+        return message.channel.send(`Couldn't find botVoucherChannel: ${BOTCONFIG.botVoucherChannel}`);
     }
 
     // Check if user is in cooldown, if so return
@@ -54,7 +54,7 @@ module.exports.run = async function (bot, message, args) {
     let columnStart = BOTCONFIG.top10ColumnStart;
     let columnEnd = BOTCONFIG.top10ColumnEnd;
 
-    let range = `${BOTCONFIG.spreadsheetTab}!${columnStart}${spreadsheetDataRowStart}:${columnEnd}${userRowEnd}`;
+    let range = `${BOTCONFIG.spreadsheetVoucherTab}!${columnStart}${spreadsheetDataRowStart}:${columnEnd}${userRowEnd}`;
     //let totalCurrentMembers = 
     let userData = await sheets.spreadsheets.values.get({
         auth: authClient,
