@@ -1,3 +1,5 @@
+/* Copyright AToxicNinja 2018 */
+
 const Discord = require('discord.js');
 const {
     google
