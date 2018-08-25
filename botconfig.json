@@ -1,7 +1,10 @@
 {
     "cmdPrefix": "!",
-    "botCmdChannel": "voucher-status",
-    "spreadsheetTab": "Vouchers",
+    "botSpamChannel": "",
+    "botVoucherChannel": "voucher-status",
+    "botReferralChannel": "referral-status",
+    "spreadsheetVoucherTab": "Vouchers",
+    "spreadsheetReferralTab": "Referral Program",
     "userRowEnd": 162,
     "spreadsheetDataRowStart": 8,
     "discordNameColumn": "C",
@@ -12,5 +15,11 @@
     "voucherLevelNames": ["Trucker", "Expert Trucker", "Global Transporter", "Expert Transporter", "Head Transporter"],
     "maxMemberCountColumnRow": "P2",
     "top10ColumnStart": "D",
-    "top10ColumnEnd": "G"
+    "top10ColumnEnd": "G",
+    "referralReferredByColumn": "A",
+    "referralAmountColumn": "B",
+    "referralJoinDateColumn": "C",
+    "referralDiscordNameColumn": "D",
+    "referralTierColumn": "G",
+    "referralBankColumn": "J"
 }
