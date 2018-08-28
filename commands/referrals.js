@@ -47,7 +47,7 @@ module.exports.run = async function (bot, message, args) {
     // Authorize Client for spreadsheets
     let authClient = await authorize();
     if (authClient === null) {
-        botChannel.send("Authorization for Google Sheets Failed");
+        botChannel.send('Authorization for Google Sheets Failed');
         return;
     }
 
@@ -60,7 +60,7 @@ module.exports.run = async function (bot, message, args) {
     }).then(function (response) {
         let max = 0;
         try {
-            max = parseInt(response.data.values[0][0].replace(".", ""));
+            max = parseInt(response.data.values[0][0].replace('.', ''));
         } catch (e) {
             console.log(e);
         }
@@ -90,7 +90,7 @@ module.exports.run = async function (bot, message, args) {
             idx++;
             if (userNames[idx] && userNames[idx][0]) {
                 let userName = userNames[idx][0];
-                if (userName.startsWith("@")) {
+                if (userName.startsWith('@')) {
                     userName = userName.slice(1);
                 }
                 if (userName === `${callingUser.user.username}#${callingUser.user.discriminator}`) {
@@ -141,11 +141,11 @@ module.exports.run = async function (bot, message, args) {
         }
         return referrals;
     }).catch(function (err) {
-        console.error("Failed to retrieve referred users: " + err);
+        console.error('Failed to retrieve referred users: ' + err);
     });
 
     if (!referredUsers) {
-        return message.reply("Sorry, something went wrong! Try again later");
+        return message.reply('Sorry, something went wrong! Try again later');
     }
 
     let numberReferred = referredUsers.length;
@@ -167,7 +167,7 @@ module.exports.run = async function (bot, message, args) {
     });
 
     if (!joinDate || joinDate === '') {
-        return message.reply("Join date format is bad/Non-Existant");
+        return message.reply('Join date format is bad/Non-Existant');
     }
 
     // Get user's Total Referral Bank
@@ -188,7 +188,7 @@ module.exports.run = async function (bot, message, args) {
     });
 
     if (bankBalance === null || bankBalance === undefined) {
-        return message.reply("Could not find referral bank balance");
+        return message.reply('Could not find referral bank balance');
     }
 
     // really bad code to get Date object without timestamp, only month, day, year
@@ -202,14 +202,14 @@ module.exports.run = async function (bot, message, args) {
     let referredMemberString = '';
 
     for (let j = 0; j < referredUsers.length; j++) {
-        referredMemberString += referredUsers[j] + "\n";
+        referredMemberString += '' + (j + 1) + '. ' + referredUsers[j] + '\n';
     }
 
     if (referredMemberString === '') {
-        referredMemberString = "No Users Referred";
+        referredMemberString = 'No Users Referred';
     }
 
-    let canRedeemBalance = (diffDays >= 14) ? "YES" : "NO";
+    let canRedeemBalance = (diffDays >= 14) ? 'YES' : 'NO';
 
     let embedMessage = new Discord.RichEmbed()
         .setDescription('User Referrals')

@@ -11,7 +11,7 @@ let sheets = google.sheets('v4');
 let cooldown = new Set();
 let cooldownSeconds = 30;
 
-let spreadsheetDataRowStart = BOTCONFIG.spreadsheetDataRowStart;
+let voucherSheetDataRowStart = BOTCONFIG.voucherSheetDataRowStart;
 let userRowEnd = BOTCONFIG.userRowEnd;
 let discordNameColumn = BOTCONFIG.discordNameColumn;
 let totalVoucherAmountColumn = BOTCONFIG.totalVoucherAmountColumn;
@@ -55,7 +55,7 @@ module.exports.run = async function (bot, message, args) {
     // Authorize Client for spreadsheets
     let authClient = await authorize();
     if (authClient === null) {
-        botChannel.send("Authorization for Google Sheets Failed");
+        botChannel.send('Authorization for Google Sheets Failed');
         return;
     }
 
@@ -67,7 +67,7 @@ module.exports.run = async function (bot, message, args) {
     let promises = [];
 
     // Get the user's row number from spreadsheet
-    let range = `${BOTCONFIG.spreadsheetVoucherTab}!${discordNameColumn}${spreadsheetDataRowStart}:${discordNameColumn}${userRowEnd}`;
+    let range = `${BOTCONFIG.spreadsheetVoucherTab}!${discordNameColumn}${voucherSheetDataRowStart}:${discordNameColumn}${userRowEnd}`;
     let relativeUserID = await sheets.spreadsheets.values.get({
         auth: authClient,
         spreadsheetId: process.env.spreadsheetID,
@@ -82,12 +82,12 @@ module.exports.run = async function (bot, message, args) {
             idx++;
             if (userNames[idx] && userNames[idx][0]) {
                 let userName = userNames[idx][0];
-                if (userName.startsWith("@")) {
+                if (userName.startsWith('@')) {
                     userName = userName.slice(1);
                 }
                 if (userName === `${callingUser.user.username}#${callingUser.user.discriminator}`) {
                     found = true;
-                    userIndex = idx + spreadsheetDataRowStart;
+                    userIndex = idx + voucherSheetDataRowStart;
                 }
             }
         }
@@ -136,7 +136,7 @@ module.exports.run = async function (bot, message, args) {
         range: range
     }).then(function (response) {
         if (response.data.values && response.data.values[0]) {
-            userWeeklyVouchers = parseInt(response.data.values[0][0].replace(".", ""), 10);
+            userWeeklyVouchers = parseInt(response.data.values[0][0].replace('.', ''), 10);
         }
     }));
 
@@ -148,7 +148,7 @@ module.exports.run = async function (bot, message, args) {
         range: range
     }).then(function (response) {
         if (response.data.values && response.data.values[0]) {
-            userTotalVouchers = parseInt(response.data.values[0][0].replace(".", ""), 10);
+            userTotalVouchers = parseInt(response.data.values[0][0].replace('.', ''), 10);
         }
     }));
 
@@ -162,7 +162,7 @@ module.exports.run = async function (bot, message, args) {
         });
 
         if (nextLevelIndex === -1) {
-            userNextLevel = "Max Level Reached";
+            userNextLevel = 'Max Level Reached';
             userNextLevelVouchersNeeded = 0;
         } else {
             userNextLevel = voucherLevelNames[nextLevelIndex];
@@ -171,25 +171,25 @@ module.exports.run = async function (bot, message, args) {
 
         // Print embedded message in bot channel chat
         let voucherEmbed = new Discord.RichEmbed()
-            .setDescription("Voucher Information")
-            .setColor("#09e213");
+            .setDescription('Voucher Information')
+            .setColor('#09e213');
 
         let voucherNum = parseInt(userWeeklyVouchers, 10);
 
-        if ((userRank !== "CEO" && userRank !== "Manager") && (voucherNum === NaN || voucherNum < 200)) {
-            voucherEmbed.setColor("#e80000");
-            voucherEmbed.addField("WARNING: You have not turned in the weekly quota yet", "You will be fired if you cannot meet this quota");
+        if ((userRank !== 'CEO' && userRank !== 'Manager') && (voucherNum === NaN || voucherNum < 200)) {
+            voucherEmbed.setColor('#e80000');
+            voucherEmbed.addField('WARNING: You have not turned in the weekly quota yet', 'You will be fired if you cannot meet this quota');
         }
 
         voucherEmbed.setThumbnail(callingUser.user.displayAvatarURL)
-            .addField("User", `${callingUser}`)
-            .addField("Rank", userRank)
-            .addField("Weekly Vouchers", userWeeklyVouchers)
-            .addField("Total Vouchers", userTotalVouchers)
-            .addField("Next Rank", userNextLevel)
-            .addField("Vouchers Needed For Next Rank", userNextLevelVouchersNeeded)
-            .addField("Spreadsheet Row Number: ", relativeUserID, true)
-            .setFooter("Bot created by AToxicNinja#2491", 'https://yt3.ggpht.com/-L3ye7_AKy-0/AAAAAAAAAAI/AAAAAAAAAO4/8hgsbtA1oZo/s100-mo-c-c0xffffffff-rj-k-no/photo.jpg');
+            .addField('User', `${callingUser}`)
+            .addField('Rank', userRank)
+            .addField('Weekly Vouchers', userWeeklyVouchers)
+            .addField('Total Vouchers', userTotalVouchers)
+            .addField('Next Rank', userNextLevel)
+            .addField('Vouchers Needed For Next Rank', userNextLevelVouchersNeeded)
+            .addField('Spreadsheet Row Number: ', relativeUserID, true)
+            .setFooter('Bot created by AToxicNinja#2491', 'https://yt3.ggpht.com/-L3ye7_AKy-0/AAAAAAAAAAI/AAAAAAAAAO4/8hgsbtA1oZo/s100-mo-c-c0xffffffff-rj-k-no/photo.jpg');
 
         console.log(`Got information for ${callingUser.user.username}#${callingUser.user.discriminator}`);
         botChannel.send(voucherEmbed);

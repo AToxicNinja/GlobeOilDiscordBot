@@ -14,7 +14,7 @@ fs.readdir('./commands/', function (err, files) {
     }
 
     let jsFiles = files.filter(function (file) {
-        return file.split(".").pop() === "js";
+        return file.split('.').pop() === 'js';
     });
 
     if (jsFiles.length <= 0) {
@@ -31,28 +31,26 @@ fs.readdir('./commands/', function (err, files) {
 
 bot.on('ready', function () {
     console.log(`Logged in as ${bot.user.tag}`);
-    bot.user.setActivity("Transport Tycoon", {
-        type: "PLAYING"
+    bot.user.setActivity('Transport Tycoon', {
+        type: 'PLAYING'
     });
 });
 
 bot.on('message', function (msg) {
     if (msg.author.bot) return;
-    if (msg.channel.type === 'dm') {
-        msg.reply("I'm too shy to dm, sorry");
-        return;
-    }
+    if (msg.channel === 'dm') return;
 
-    let botChannel = msg.guild.channels.find(function (val) {
-        return val.name === BOTCONFIG.botCmdChannel;
+    let guildMemb = msg.guild.member(msg.author);
+    let globeOilRole = guildMemb.roles.find(function (val) {
+        return val.name === "Globe Oil";
     });
 
-    if (botChannel && msg.channel != botChannel) {
-        return;
+    if (!guildMemb || !globeOilRole) {
+        return msg.reply('Sorry, only Globe Oil employees can use me');
     }
 
     let prefix = BOTCONFIG.cmdPrefix;
-    let messageArray = msg.content.split(" ");
+    let messageArray = msg.content.split(' ');
     let cmd = messageArray[0];
     if (cmd.startsWith(prefix)) {
         let args = messageArray.slice(1);

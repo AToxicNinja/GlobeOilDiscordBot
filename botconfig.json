@@ -3,10 +3,11 @@
     "botSpamChannel": "",
     "botVoucherChannel": "voucher-status",
     "botReferralChannel": "referral-status",
+    "alertChannel": "announcements-weekly",
     "spreadsheetVoucherTab": "Vouchers",
     "spreadsheetReferralTab": "Referral Program",
     "userRowEnd": 162,
-    "spreadsheetDataRowStart": 8,
+    "voucherSheetDataRowStart": 8,
     "discordNameColumn": "C",
     "currentRankColumn": "E",
     "totalVoucherAmountColumn": "F",
@@ -21,5 +22,6 @@
     "referralJoinDateColumn": "C",
     "referralDiscordNameColumn": "D",
     "referralTierColumn": "G",
-    "referralBankColumn": "J"
+    "referralBankColumn": "J",
+    "managerRole": "manager"
 }

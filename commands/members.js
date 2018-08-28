@@ -15,47 +15,47 @@ module.exports.help = {
     name: 'members'
 };
 
-module.exports.run = async function(bot, message, args){
-// Get calling user's guildMember info
-let callingUser = message.guild.member(message.author);
+module.exports.run = async function (bot, message, args) {
+    // Get calling user's guildMember info
+    let callingUser = message.guild.member(message.author);
 
-// Get bot channel info
-let botChannel = message.guild.channels.find(function (val) {
-    return val.name === BOTCONFIG.botVoucherChannel;
-});
+    // Get bot channel info
+    let botChannel = message.guild.channels.find(function (val) {
+        return val.name === BOTCONFIG.botVoucherChannel;
+    });
 
-if (!botChannel) {
-    return message.channel.send(`Couldn't find botVoucherChannel: ${BOTCONFIG.botVoucherChannel}`);
-}
+    if (!botChannel) {
+        return message.channel.send(`Couldn't find botVoucherChannel: ${BOTCONFIG.botVoucherChannel}`);
+    }
 
-// Check if user is in cooldown, if so return
-if (cooldown.has(callingUser.id)) {
-    message.reply(`You must wait ${cooldownSeconds} seconds before using this command again`);
-    return;
-}
+    // Check if user is in cooldown, if so return
+    if (cooldown.has(callingUser.id)) {
+        message.reply(`You must wait ${cooldownSeconds} seconds before using this command again`);
+        return;
+    }
 
-// Add user to cooldown list to prevent over-usage of command
-cooldown.add(callingUser.id);
+    // Add user to cooldown list to prevent over-usage of command
+    cooldown.add(callingUser.id);
 
-// set timeout to remove them
-setTimeout(function () {
-    cooldown.delete(callingUser.id);
-}, cooldownSeconds * 1000);
+    // set timeout to remove them
+    setTimeout(function () {
+        cooldown.delete(callingUser.id);
+    }, cooldownSeconds * 1000);
 
-// Authorize Client for spreadsheets
-let authClient = await authorize();
-if (authClient === null) {
-    botChannel.send("Authorization for Google Sheets Failed");
-    return;
-}
+    // Authorize Client for spreadsheets
+    let authClient = await authorize();
+    if (authClient === null) {
+        botChannel.send('Authorization for Google Sheets Failed');
+        return;
+    }
 
-// Get Member Count
-let spreadsheetDataRowStart = BOTCONFIG.spreadsheetDataRowStart;
-let userRowEnd = BOTCONFIG.userRowEnd;
-let discordNameColumn = BOTCONFIG.discordNameColumn;
-let maxMembersRowColumn = BOTCONFIG.maxMemberCountColumnRow;
+    // Get Member Count
+    let voucherSheetDataRowStart = BOTCONFIG.voucherSheetDataRowStart;
+    let userRowEnd = BOTCONFIG.userRowEnd;
+    let discordNameColumn = BOTCONFIG.discordNameColumn;
+    let maxMembersRowColumn = BOTCONFIG.maxMemberCountColumnRow;
 
-let range = `${BOTCONFIG.spreadsheetVoucherTab}!${discordNameColumn}${spreadsheetDataRowStart}:${discordNameColumn}${userRowEnd}`;
+    let range = `${BOTCONFIG.spreadsheetVoucherTab}!${discordNameColumn}${voucherSheetDataRowStart}:${discordNameColumn}${userRowEnd}`;
     let totalCurrentMembers = await sheets.spreadsheets.values.get({
         auth: authClient,
         spreadsheetId: process.env.spreadsheetID,
@@ -63,7 +63,7 @@ let range = `${BOTCONFIG.spreadsheetVoucherTab}!${discordNameColumn}${spreadshee
     }).then(function (response) {
         let userNames = response.data.values;
         return userNames.length;
-    }).catch(function(error){
+    }).catch(function (error) {
         console.error(error);
     });
 
@@ -72,31 +72,27 @@ let range = `${BOTCONFIG.spreadsheetVoucherTab}!${discordNameColumn}${spreadshee
         auth: authClient,
         spreadsheetId: process.env.spreadsheetID,
         range: range
-    }).then(function (response){
+    }).then(function (response) {
         let max = 0;
-        try{
-            max = parseInt(response.data.values[0][0].replace(".",""));
-        }
-        catch(e)
-        {
-        }
+        try {
+            max = parseInt(response.data.values[0][0].replace('.', ''));
+        } catch (e) {}
         return max;
-    }).catch(function(error)
-    {
+    }).catch(function (error) {
         console.log(error);
     });
 
-    if(!maxMembers || !totalCurrentMembers){
-        botChannel.send("There was an error trying to get the member count, please try again later");
+    if (!maxMembers || !totalCurrentMembers) {
+        botChannel.send('There was an error trying to get the member count, please try again later');
         return;
     }
 
     let embedMsg = new Discord.RichEmbed()
-    .setDescription("Member count")
-    .setColor("#4286f4")
-    .addField("Current Member Count", totalCurrentMembers)
-    .addField("Current Max Members", maxMembers)
-    .setFooter("Bot created by AToxicNinja#2491", 'https://yt3.ggpht.com/-L3ye7_AKy-0/AAAAAAAAAAI/AAAAAAAAAO4/8hgsbtA1oZo/s100-mo-c-c0xffffffff-rj-k-no/photo.jpg');
+        .setDescription('Member count')
+        .setColor('#4286f4')
+        .addField('Current Member Count', totalCurrentMembers)
+        .addField('Current Max Members', maxMembers)
+        .setFooter('Bot created by AToxicNinja#2491', 'https://yt3.ggpht.com/-L3ye7_AKy-0/AAAAAAAAAAI/AAAAAAAAAO4/8hgsbtA1oZo/s100-mo-c-c0xffffffff-rj-k-no/photo.jpg');
 
     botChannel.send(embedMsg);
 };

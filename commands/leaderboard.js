@@ -38,28 +38,28 @@ module.exports.run = async function (bot, message, args) {
 
     // set timeout to reset cooldown
     setTimeout(function () {
-       onCooldown = false;
+        onCooldown = false;
     }, cooldownSeconds * 1000);
 
     // Authorize Client for spreadsheets
     let authClient = await authorize();
     if (authClient === null) {
-        botChannel.send("Authorization for Google Sheets Failed");
+        botChannel.send('Authorization for Google Sheets Failed');
         return;
     }
 
     // Get Top 10 players by weekly vouchers
-    let spreadsheetDataRowStart = BOTCONFIG.spreadsheetDataRowStart;
+    let voucherSheetDataRowStart = BOTCONFIG.voucherSheetDataRowStart;
     let userRowEnd = BOTCONFIG.userRowEnd;
     let columnStart = BOTCONFIG.top10ColumnStart;
     let columnEnd = BOTCONFIG.top10ColumnEnd;
 
-    let range = `${BOTCONFIG.spreadsheetVoucherTab}!${columnStart}${spreadsheetDataRowStart}:${columnEnd}${userRowEnd}`;
+    let range = `${BOTCONFIG.spreadsheetVoucherTab}!${columnStart}${voucherSheetDataRowStart}:${columnEnd}${userRowEnd}`;
     //let totalCurrentMembers = 
     let userData = await sheets.spreadsheets.values.get({
         auth: authClient,
         spreadsheetId: process.env.spreadsheetID,
-        majorDimension: "ROWS",
+        majorDimension: 'ROWS',
         range: range
     }).then(function (response) {
         return response.data.values;
@@ -75,24 +75,24 @@ module.exports.run = async function (bot, message, args) {
 
     //console.log(top10);
 
-    let top10TotalString = "";
+    let top10TotalString = '';
     top10Total.forEach(function (entry) {
         top10TotalString += `${entry[0]}: ${entry[2]} vouchers
     `;
     });
 
-    let top10WeeklyString = "";
+    let top10WeeklyString = '';
     top10Weekly.forEach(function (entry) {
         top10WeeklyString += `${entry[0]}: ${entry[3]} vouchers
     `;
     });
 
     let embedMsg = new Discord.RichEmbed()
-        .setDescription("Top 10 Leaderboard")
-        .setColor("#fa0ab2")
-        .addField("Top 10 Total Vouchers", top10TotalString)
-        .addField("Top 10 Weekly Vouchers", top10WeeklyString)
-        .setFooter("Bot created by AToxicNinja#2491", 'https://yt3.ggpht.com/-L3ye7_AKy-0/AAAAAAAAAAI/AAAAAAAAAO4/8hgsbtA1oZo/s100-mo-c-c0xffffffff-rj-k-no/photo.jpg');
+        .setDescription('Top 10 Leaderboard')
+        .setColor('#fa0ab2')
+        .addField('Top 10 Total Vouchers', top10TotalString)
+        .addField('Top 10 Weekly Vouchers', top10WeeklyString)
+        .setFooter('Bot created by AToxicNinja#2491', 'https://yt3.ggpht.com/-L3ye7_AKy-0/AAAAAAAAAAI/AAAAAAAAAO4/8hgsbtA1oZo/s100-mo-c-c0xffffffff-rj-k-no/photo.jpg');
 
     botChannel.send(embedMsg);
 };
