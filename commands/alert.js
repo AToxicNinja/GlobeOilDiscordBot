@@ -25,8 +25,12 @@ module.exports.run = async function (bot, message, args) {
     let callingUser = message.channel.guild.member(message.author);
 
     // Make sure calling user is a manager or above
+    let acceptableRoles = BOTCONFIG.managerRoles;
     let role = callingUser.roles.find(function (val) {
-        return val.name === BOTCONFIG.managerRole;
+        if (acceptableRoles.indexOf(val.name) > -1) {
+            return true;
+        }
+        return false;
     });
 
     if (!role) {

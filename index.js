@@ -34,16 +34,42 @@ bot.on('ready', function () {
     bot.user.setActivity('Transport Tycoon', {
         type: 'PLAYING'
     });
+
+    // Find the discord guild first
+    let guild = bot.guilds.find(function (val) {
+        return val.name === 'Test Server';//"Globe oil Company Discord";
+    });
+
+    if (!guild) {
+        return;
+    }
+    // Find system channel
+    let channel = guild.channels.find(function (val) {
+        return val.name.includes('manager-chat');
+    });
+
+    if (!channel) {
+        return;
+    }
+
+    // get CEO role and let them know bot is started/updated
+    let role = guild.roles.find(function (val) {
+        return val.name === 'CEO';
+    });
+    if (role) {
+        channel.send(`${role} Bot has been started/updated`);
+    }
+
 });
 
 bot.on('message', function (msg) {
     if (msg.author.bot) return;
     if (msg.channel === 'dm') return;
 
-    let guildMemb = msg.guild.member(msg.author);
-    let globeOilRole = guildMemb.roles.find(function (val) {
-        return val.name === "Globe Oil";
-    });
+    // let guildMemb = msg.guild.member(msg.author);
+    // let globeOilRole = guildMemb.roles.find(function (val) {
+    //     return val.name === "Globe Oil";
+    // });
 
     // if (!guildMemb || !globeOilRole) {
     //     return msg.reply('Sorry, only Globe Oil employees can use me');

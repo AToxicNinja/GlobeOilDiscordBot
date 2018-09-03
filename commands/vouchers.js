@@ -6,6 +6,8 @@ const {
 } = require('googleapis');
 const BOTCONFIG = require('../botconfig.json');
 
+let weekly = require('./weekly.js');
+
 let sheets = google.sheets('v4');
 
 let cooldown = new Set();
@@ -176,9 +178,15 @@ module.exports.run = async function (bot, message, args) {
 
         let voucherNum = parseInt(userWeeklyVouchers, 10);
 
-        if ((userRank !== 'CEO' && userRank !== 'Manager') && (voucherNum === NaN || voucherNum < 200)) {
-            voucherEmbed.setColor('#e80000');
-            voucherEmbed.addField('WARNING: You have not turned in the weekly quota yet', 'You will be fired if you cannot meet this quota');
+        // If weekly quota is turned on
+        if (weekly.quotaOn) {
+            // If user has not turned in weekly quota
+            if ((userRank !== 'CEO' && userRank !== 'Manager') && (voucherNum === NaN || voucherNum < 200)) {
+                voucherEmbed.setColor('#e80000');
+                voucherEmbed.addField('WARNING: You have not turned in the weekly quota yet', 'You will be fired if you cannot meet this quota');
+            }
+        } else {
+            voucherEmbed.addField('Weekly Quota is currently disabled', 'You do not need to turn in a min amount of vouchers currently');
         }
 
         voucherEmbed.setThumbnail(callingUser.user.displayAvatarURL)
