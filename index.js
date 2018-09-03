@@ -37,7 +37,7 @@ bot.on('ready', function () {
 
     // Find the discord guild first
     let guild = bot.guilds.find(function (val) {
-        return val.name === 'Test Server';//"Globe oil Company Discord";
+        return val.name === "Globe oil Company Discord";
     });
 
     if (!guild) {
