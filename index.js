@@ -45,9 +45,9 @@ bot.on('message', function (msg) {
         return val.name === "Globe Oil";
     });
 
-    if (!guildMemb || !globeOilRole) {
-        return msg.reply('Sorry, only Globe Oil employees can use me');
-    }
+    // if (!guildMemb || !globeOilRole) {
+    //     return msg.reply('Sorry, only Globe Oil employees can use me');
+    // }
 
     let prefix = BOTCONFIG.cmdPrefix;
     let messageArray = msg.content.split(' ');
