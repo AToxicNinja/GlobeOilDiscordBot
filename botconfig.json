@@ -23,5 +23,5 @@
     "referralDiscordNameColumn": "D",
     "referralTierColumn": "G",
     "referralBankColumn": "J",
-    "managerRoles": ["hire/manager", "manager", "ceo"]
+    "managerRoles": ["Manager", "Hire/Manager", "CEO", "manager"]
 }
